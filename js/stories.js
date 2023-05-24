@@ -12,6 +12,9 @@ async function getAndShowStoriesOnStart() {
   putStoriesOnPage();
 }
 
+
+
+
 /**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
@@ -76,7 +79,59 @@ async function addNewStory() {
 
 $addStoryForm.on("submit", addNewStory);
 
-async function favoriteStories() {
-  console.debug("favoriteStories");
+async function toggleFavStory(evt) {
+  console.debug("toggleFavStory");
+  
+  const $tgt = $(evt.target);
+  // get closest li element
+  const $closestLi = $tgt.closest('li');
+  // get storyID from li id attribute
+  const storyID = $closestLi.attr('id');
+  //console.log(storyID);
+  // get story object
+  const story = storyList.stories.find(s => s.storyId === storyID);
+  //console.log(story);
+
+  if ($tgt.hasClass('fas')) {
+    $tgt.closest('i').toggleClass('fas far');
+    await currentUser.removeFavStory(story);
+  } else {
+    $tgt.closest('i').toggleClass('far fas');
+    await currentUser.addFavStory(story);
+  }
 }
+
+$storiesList.on('click', '.star', toggleFavStory);
+
+function displayFavorites() {
+  console.debug("displayFavorites");
+
+  $favoriteStories.empty();
+
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $favoriteStories.append($story);
+  }
+  $allStoriesList.hide();
+  $myStories.hide();
+  $favoriteStories.show();
+}
+
+$navFavorites.on('click', displayFavorites);
+
+function displayMyStories() {
+  console.debug("displayMyStories") 
+
+  $myStories.empty();
+
+  for (let story of currentUser.ownStories) {
+    const $story = generateStoryMarkup(story);
+    $myStories.append($story);
+  }
+  $allStoriesList.hide();
+  $favoriteStories.hide();
+  $myStories.show();
+}
+
+$navMyStories.on('click', displayMyStories);
 

@@ -220,4 +220,37 @@ class User {
       return null;
     }
   }
+
+  async removeFavStory(story) {
+    const token = this.loginToken;
+    const username = this.username;
+    const storyID = story.storyId;
+
+    this.favorites = this.favorites.filter(function(el) {
+      return el.storyId !== storyID;
+    });
+
+    const res = await axios ({
+      url: `${BASE_URL}/users/${username}/favorites/${storyID}`,
+      method: "DELETE",
+      data: { token: token }
+    });
+  }
+
+  async addFavStory(story) {
+    const token = this.loginToken;
+    const username = this.username;
+    const storyID = story.storyId;
+
+    this.favorites.push(story);
+
+    const res = await axios ({
+      url: `${BASE_URL}/users/${username}/favorites/${storyID}`,
+      method: "POST",
+      data: { token: token }
+    });
+
+  }
+
+  
 }

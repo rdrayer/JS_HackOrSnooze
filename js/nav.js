@@ -19,6 +19,10 @@ $body.on("click", "#nav-all", navAllStories);
 function navAddStory(evt) {
   console.debug("navAddStory", evt);
   $addStoryForm.show();
+  $favoriteStories.hide();
+  $myStories.hide();
+  $allStoriesList.show();
+
 }
 
 $navSubmit.on("click", navAddStory);
