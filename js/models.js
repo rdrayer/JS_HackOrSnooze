@@ -24,8 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    const storyURL = new URL(this.url);
+    return storyURL.hostname;
   }
 }
 
@@ -74,7 +74,6 @@ class StoryList {
    */
 
   async addStory(user, { title, author, url }) {
-    // UNIMPLEMENTED: complete this function!
     const token = user.loginToken;
 
     const newStory = {
@@ -93,15 +92,15 @@ class StoryList {
       method: "POST",
       data:  newStory  
     });
-
     //console.log(res);
+
+    // create new story instance
     const story = new Story(res.data.story);
+    //console.log(this.stories);
 
-    console.log(this.stories);
-
+    // add newly created story to beginning of story list
     this.stories.unshift(story);
     
-
     return story;
     
   }

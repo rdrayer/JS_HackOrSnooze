@@ -26,10 +26,11 @@ function generateStoryMarkup(story) {
 
   // is there a current user, if so, show star option
   const showStar = Boolean(currentUser);
+  //console.log(showStar);
 
   return $(`
       <li id="${story.storyId}">
-
+        ${showStar ? '<span class="star"><i class="far fa-star"></i></span>' : ''}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -71,8 +72,11 @@ async function addNewStory() {
   // remove form and add new story to existing list
   $addStoryForm.hide();
   putStoriesOnPage();
-  
 }
 
 $addStoryForm.on("submit", addNewStory);
+
+async function favoriteStories() {
+  console.debug("favoriteStories");
+}
 
