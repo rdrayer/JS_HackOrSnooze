@@ -33,7 +33,7 @@ function generateStoryMarkup(story) {
 
   return $(`
       <li id="${story.storyId}">
-        ${showStar ? '<span class="star"><i class="far fa-star"></i></span>' : ''}
+        ${showStar ? getStarHTML(story, currentUser) : ''}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -42,6 +42,15 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+}
+
+function getStarHTML(story, user) {
+  const isFavorite = user.isFavorite(story);
+  const starType = isFavorite ? "fas" : "far";
+  return `
+      <span class="star">
+        <i class="${starType} fa-star"></i>
+      </span>`;
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -58,6 +67,14 @@ function putStoriesOnPage() {
   }
 
   $allStoriesList.show();
+  $favoriteStories.hide();
+  $myStories.hide();
+
+  // if(currentUser.favorites) {
+  //   //console.log(currentUser.favorites);
+  //   const lis = document.querySelectorAll('li');
+  //   //console.log(lis);
+  // }
 }
 
 async function addNewStory() {
@@ -114,6 +131,7 @@ function displayFavorites() {
   }
   $allStoriesList.hide();
   $myStories.hide();
+  $addStoryForm.hide();
   $favoriteStories.show();
 }
 
